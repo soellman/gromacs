@@ -17,15 +17,15 @@ MAINTAINER Oliver Soell <oliver@soell.net>
 #  LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 ENV GROMACS_VERSION 5.1
+ENV TYPE intel-avx-gpu
 
 RUN apt-get update -y &&\
     apt-get install -y ca-certificates build-essential curl cmake libxml2-dev &&\
     curl -sL https://github.com/gromacs/gromacs/archive/v${GROMACS_VERSION}.tar.gz | tar zxfv - -C /var/tmp &&\
     
-    TYPE=intel-avx-gpu &&\
     mkdir /var/tmp/build-${TYPE} &&\
     cd /var/tmp/build-${TYPE} &&\
-    cmake /var/tmp/gromacs-${GROMACS_VERSION} -DCMAKE_INSTALL_PREFIX=/opt/gromacs/${GROMACS_VERSION}-${TYPE} \
+    cmake /var/tmp/gromacs-${GROMACS_VERSION} -DCMAKE_INSTALL_PREFIX=/opt/gromacs \
       -DGMX_BUILD_OWN_FFTW=ON \
       -DGMX_USE_RDTSCP=OFF &&\
     make -j4 &&\
@@ -38,5 +38,4 @@ RUN apt-get update -y &&\
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists
 
-RUN ln -s /opt/gromacs/${GROMACS_VERSION}-${TYPE} /opt/gromacs
 VOLUME /opt/gromacs
