@@ -1,2 +1,2 @@
 # gromacs
-docker and gromacs and copernicus
+dockerized gromacs
